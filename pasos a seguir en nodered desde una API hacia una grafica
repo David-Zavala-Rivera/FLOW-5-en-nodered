@@ -1,0 +1,88 @@
+pasos a seguir 
+
+Trabajar Nodered con Openweather API 
+
+crear una cuenta, en mi caso realize una cuenta con los datos siguientes:
+
+	correo: david.zavalar2@gmail.com
+	user:	DAVID2
+	pass: 	ZavalaR28
+
+Seleccionamos la opcion APIKeys y creamos una nueva APIKey
+
+Posteriormente vamos al menua API  y nos dirigimos al menu CURRENT & FORECAST WEATHER DATA COLLECTION en la opcion Current Weather Data y le damos clic en API doc y copiamos el enlace que aparece en la seccion de abajo 
+
+https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
+
+
+Modificamos el enlace que apare cambiando la latitud, longitud y API Key de la siguiente forma
+dirección en coordenadas
+
+19.2748552,-99.1536748,21z
+ 
+https://api.openweathermap.org/data/2.5/weather?lat=19.2748552&lon=-99.1536748&appid={API key}
+********************************************************************************************************************************************
+Posteriormente agregamos la API Key
+
+https://api.openweathermap.org/data/2.5/weather?lat=19.2748552&lon=-99.1536748&appid=d781fbfcef709c7f3cbcb84e4b25587b
+
+********************************************************************************************************************************************
+
+Finalmente agregamos el modo metrico y el enlace queda de la sigueinte forma 
+https://api.openweathermap.org/data/2.5/weather?lat=19.2748552&lon=-99.1536748&appid=d781fbfcef709c7f3cbcb84e4b25587b&units=metric
+
+********************************************************************************************************************************************
+
+PASAMOS AL NODERED Y SELECCIONAMOS EL NODO INJECT
+
+MSG PAYLOAD Y SELECCIONAMOS TIMESTAMP 
+
+********************************************************
+SELECCIONAMOS EL NODO HTTP REQUEST Y LO CONFIGURAMOS EN LA OPCIÓN GET
+Y COLOCAMOS LA URL DE LA API, POR LO QUE EL NODO ENTRA A LA PAGINA CON LOS DATOS JSON 
+
+PAYLOAD: IGNORE
+
+******************************************************
+SELECCIONAMOS EL NODO JSON Y SELECCIONAMOS LA ACTION 
+
+Action: Always convert to JavaScript Object
+property: msg payload
+**************************************************** 
+
+La consulta realiza la misma tecnica que el la funtion del flow 4 en la pestaña On Message
+
+msg.topic=msg.payload.id;
+msg.payload=msg.payload.temp
+return msg;
+
+pero debe ser ahora de la siguiente forma 
+
+
+msg.topic=msg.payload.main.temp;
+global.set("tempFlow5",msg.payload);
+return msg;
+**************************************************** 
+Posteriormente hacemos una variable global 
+
+seleccionamos la flechita hacia abajo en la parte superior derecha y seleccionamos la opcion Context data 
+
+y creamos la variable 
+
+	humFlow5	60
+	tempFlow5	19.94
+
+Posterirmente ponemos la Solicitud API en modo Json las cuales se colocaran en el nodo function  
+
+Temperatura
+
+msg.topic=msg.payload.main.temp;
+global.set("tempFlow5",msg.payload);
+return msg;
+ 
+
+Humedad
+
+msg.topic=msg.payload.main.humidity;
+global.set("tempFlow5",msg.payload);
+return msg;
