@@ -86,3 +86,17 @@ Humedad
 msg.topic=msg.payload.main.humidity;
 global.set("tempFlow5",msg.payload);
 return msg;
+
+
+
+
+Codigo en el Enviador 
+
+Nodo Function 
+msg.payload= '{"id":"DAVID2","temp":'+global.get("tempFlow5")+',"hum":'global.get ("humFlow5")+'}';
+
+
+
+
+
+
